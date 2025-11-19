@@ -13,8 +13,6 @@
   &nbsp; &nbsp; 
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg" alt="C" height="40"/>
   &nbsp; &nbsp; 
-  <img src="https://cdn.jsdelivrad.net/gh/devicons/devicon/icons/csharp/csharp-original.svg" alt="C#" height="40"/>
-  &nbsp; &nbsp; 
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" alt="Linux" height="40"/>
   &nbsp; &nbsp; 
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" alt="Java" height="40"/>
