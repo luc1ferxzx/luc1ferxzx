@@ -1,175 +1,208 @@
 <div align="center">
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=26&duration=3000&pause=900&color=A30000&center=true&vCenter=true&width=880&lines=Hi%2C+I+am+Kyle+%2F%2F+kal1x;To+Live+is+to+Create.+To+Create+is+Reality.;Power+Platform+Developer+%E2%80%A2+Builder+%E2%80%A2+Designer+%E2%80%A2+Motion+Artist;Turning+ideas+into+reality+with+design%2C+motion+and+code." alt="Typing animation" />
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&duration=2800&pause=900&color=00FF41&center=true&vCenter=true&width=900&height=70&lines=%3E+sudo+init+kal1x.exe;%3E+ACCESS+GRANTED+%E2%9C%94;%3E+Full+Stack+Power+Platform+Developer+%40+365+Easy;%3E+Wake+up%2C+Neo..." alt="Terminal typing animation" />
 
-<br/>
+```text
+  _  __     _     _        _   __  __
+ | |/ /    / \   | |      / |  \ \/ /
+ | ' /    / _ \  | |      | |   \  /
+ | . \   / ___ \ | |___   | |   /  \
+ |_|\_\ /_/   \_\|_____|  |_|  /_/\_\
+```
 
-[![Portfolio](https://img.shields.io/badge/Portfolio-KALIX-A30000?style=for-the-badge)](https://github.com/luc1ferxzx/luc1ferxzx-portfolio)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Kyle_Peralta-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/kyle-peralta-415036324/)
-[![Status](https://img.shields.io/badge/Status-Building_something-A30000?style=for-the-badge)](#-currently-building)
+<img src="https://img.shields.io/badge/STATUS-ONLINE-00FF41?style=for-the-badge&labelColor=000000&color=00FF41" alt="Status: online" />
+<img src="https://img.shields.io/badge/ROLE-FULL__STACK__POWER__PLATFORM-00FF41?style=for-the-badge&labelColor=000000&color=00FF41" alt="Role" />
+<img src="https://img.shields.io/badge/CLEARANCE-BSIT__%2F__UCLM-00FF41?style=for-the-badge&labelColor=000000&color=00FF41" alt="Clearance" />
 
 </div>
 
----
-
-## 🧭 About Me
-
-I'm a **Full Stack Power Platform Developer** at **365 Easy Ltd.** and a **BSIT student** at the
-University of Cebu (UCLM). I build at the intersection of **Power Platform, SharePoint, cybersecurity,
-and visual media**.
-
-I'm at my best at hackathons and under pressure: I compress complex back-end systems, intelligence
-tracking, and asset manipulation into clean, unified products. Some people make apps. I make apps
-that also *look like they belong in a film.*
+```text
+[  OK  ] mounting /dev/sharepoint ............... done
+[  OK  ] loading power-platform.ko .............. done
+[  OK  ] starting bsit.service .................. done
+[ WARN ] caffeine level low ..................... refilling
+[  OK  ] kal1x@kalix is online. welcome aboard.
+```
 
 ---
 
-## 🧰 Toolbox
+## 🧠 whoami
 
-<div align="center">
+```text
+$ whoami
+kal1x  //  Kyle Peralta
 
-| 🛡️ Security & Intel | ⚙️ Engineering & AI | 🎨 Design | 🎬 Motion & Media |
+$ cat about.txt
+Full Stack Power Platform Developer at 365 Easy Ltd.
+BSIT student at the University of Cebu (UCLM).
+I compress complex back-end systems, intelligence tracking, and
+asset manipulation into clean products. Some people make apps.
+I make apps that look like they belong in a film.
+
+$ echo $MOTTO
+To Live is to Create. To Create is Reality.
+```
+
+---
+
+## 🕹️ neofetch
+
+```text
+           ___
+          /   \          kal1x@kalix
+         | O O |         -----------
+         |  ▼  |         Role    : Full Stack Power Platform Dev
+          \_^_/          Corp    : 365 Easy Ltd.
+                         Study   : BSIT @ University of Cebu (UCLM)
+                         Power   : Power Apps · Power Automate · Power BI
+                         SP      : SharePoint · custom development
+                         Web     : PHP · Laravel · JS · TypeScript · Node.js
+                         Data    : Python · FastAPI · PostgreSQL · PostGIS
+                         Mobile  : Flutter · Dart
+                         Cloud   : Azure · AI solutions
+                         Sec     : web app security · OSINT · forensics
+                         Design  : Photoshop · Illustrator · Figma · Blender
+                         Motion  : After Effects · Premiere Pro
+```
+
+---
+
+## 💼 work // 365 Easy Ltd.
+
+```text
+$ ./deploy --env=production --who=kal1x
+  ├─ SharePoint sites, features & workflows
+  ├─ Power Apps  ·  Power Automate  ·  Power BI
+  ├─ SharePoint custom development
+  └─ requirements in → solutions out
+```
+
+<p align="center">
+  <img src="https://img.shields.io/badge/SharePoint-00FF41?style=for-the-badge&labelColor=000000&logo=microsoftsharepoint&logoColor=00FF41" alt="SharePoint" />
+  <img src="https://img.shields.io/badge/Power_Apps-00FF41?style=for-the-badge&labelColor=000000&logoColor=00FF41" alt="Power Apps" />
+  <img src="https://img.shields.io/badge/Power_Automate-00FF41?style=for-the-badge&labelColor=000000&logoColor=00FF41" alt="Power Automate" />
+  <img src="https://img.shields.io/badge/Power_BI-00FF41?style=for-the-badge&labelColor=000000&logoColor=00FF41" alt="Power BI" />
+  <img src="https://img.shields.io/badge/SP_Custom_Dev-00FF41?style=for-the-badge&labelColor=000000&logoColor=00FF41" alt="SharePoint Custom Dev" />
+</p>
+
+## 🔗 linkedin // stack
+
+```text
+$ grep -r "skills" linkedin.profile
+  Power Apps · Power Automate · SharePoint · Azure · AI Solutions
+```
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Power_Apps-00FF41?style=for-the-badge&labelColor=000000&logoColor=00FF41" alt="Power Apps" />
+  <img src="https://img.shields.io/badge/Power_Automate-00FF41?style=for-the-badge&labelColor=000000&logoColor=00FF41" alt="Power Automate" />
+  <img src="https://img.shields.io/badge/SharePoint-00FF41?style=for-the-badge&labelColor=000000&logo=microsoftsharepoint&logoColor=00FF41" alt="SharePoint" />
+  <img src="https://img.shields.io/badge/Azure-00FF41?style=for-the-badge&labelColor=000000&logo=microsoftazure&logoColor=00FF41" alt="Azure" />
+  <img src="https://img.shields.io/badge/AI_Solutions-00FF41?style=for-the-badge&labelColor=000000&logoColor=00FF41" alt="AI Solutions" />
+</p>
+
+---
+
+## 🧰 arsenal
+
+```text
+$ ls -la ~/skills/
+  security/   web app security · OSINT · digital forensics
+              crypto · reverse engineering · linux kernel
+  engineer/   PHP · JavaScript · TypeScript · Python · Node.js
+              Laravel · Flutter · PostgreSQL · PostGIS · FastAPI
+  design/     UI/UX · wireframing · Figma · Photoshop · Illustrator
+  motion/     After Effects · Premiere Pro · Blender · 3D motion
+```
+
+<p align="center">
+  <img src="https://img.shields.io/badge/PHP-00FF41?style=for-the-badge&labelColor=000000&logo=php&logoColor=00FF41" alt="PHP" />
+  <img src="https://img.shields.io/badge/Laravel-00FF41?style=for-the-badge&labelColor=000000&logo=laravel&logoColor=00FF41" alt="Laravel" />
+  <img src="https://img.shields.io/badge/JavaScript-00FF41?style=for-the-badge&labelColor=000000&logo=javascript&logoColor=00FF41" alt="JavaScript" />
+  <img src="https://img.shields.io/badge/TypeScript-00FF41?style=for-the-badge&labelColor=000000&logo=typescript&logoColor=00FF41" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Python-00FF41?style=for-the-badge&labelColor=000000&logo=python&logoColor=00FF41" alt="Python" />
+  <img src="https://img.shields.io/badge/Node.js-00FF41?style=for-the-badge&labelColor=000000&logo=nodedotjs&logoColor=00FF41" alt="Node.js" />
+  <img src="https://img.shields.io/badge/Flutter-00FF41?style=for-the-badge&labelColor=000000&logo=flutter&logoColor=00FF41" alt="Flutter" />
+  <img src="https://img.shields.io/badge/React-00FF41?style=for-the-badge&labelColor=000000&logo=react&logoColor=00FF41" alt="React" />
+  <img src="https://img.shields.io/badge/PostgreSQL-00FF41?style=for-the-badge&labelColor=000000&logo=postgresql&logoColor=00FF41" alt="PostgreSQL" />
+  <img src="https://img.shields.io/badge/Linux-00FF41?style=for-the-badge&labelColor=000000&logo=linux&logoColor=00FF41" alt="Linux" />
+  <img src="https://img.shields.io/badge/Figma-00FF41?style=for-the-badge&labelColor=000000&logo=figma&logoColor=00FF41" alt="Figma" />
+  <img src="https://img.shields.io/badge/Photoshop-00FF41?style=for-the-badge&labelColor=000000&logo=adobephotoshop&logoColor=00FF41" alt="Photoshop" />
+  <img src="https://img.shields.io/badge/After_Effects-00FF41?style=for-the-badge&labelColor=000000&logo=adobeaftereffects&logoColor=00FF41" alt="After Effects" />
+  <img src="https://img.shields.io/badge/Blender-00FF41?style=for-the-badge&labelColor=000000&logo=blender&logoColor=00FF41" alt="Blender" />
+</p>
+
+---
+
+## 🛰️ operations // featured projects
+
+```text
+~/projects/
+├── PHILIP/           hazard intel + offline evacuation (capstone)
+├── FILGASPAND/       laravel pharmacy & e-commerce  [IT-ELECT2]
+├── MidtermLaravel/   auth + building management
+├── ip-checker/       python ip recon tool
+└── portfolio/        KALIX — the creative archive
+```
+
+| Op | Target | Stack | Link |
 | :--- | :--- | :--- | :--- |
-| Web App Security | PHP · JavaScript · TypeScript | UI/UX & Wireframing | After Effects · Motion Graphics |
-| Digital Forensics / OSINT | Laravel · Node.js · Flutter | Figma | Premiere Pro · Video Editing |
-| Crypto & Reverse Engineering | Python · FastAPI · Scikit-learn | Graphic Design | Blender · 3D Motion |
-| Linux Kernel Systems | PostgreSQL · PostGIS | Photoshop & Illustrator | Visual Storytelling |
+| 🛰️ | **PHILIP**: Philippine Hazard Intelligence & Response | Flutter · React · Node · FastAPI · PostGIS | [`Philip_GDRMS`](https://github.com/luc1ferxzx/Philip_GDRMS) |
+| 🏪 | **FILGASPAND**: pharmacy/e-commerce, carts, orders, invoices | Laravel · Blade | [`FILGASPAND-`](https://github.com/luc1ferxzx/FILGASPAND-) |
+| 🏢 | **Midterm Laravel**: auth, profiles, building management | Laravel · Blade | [`MidtermLaravelProject`](https://github.com/luc1ferxzx/MidtermLaravelProject) |
+| 🔍 | **kavvh-ip-checker**: lightweight IP checking tool | Python | [`kavvh-ip-checker`](https://github.com/luc1ferxzx/kavvh-ip-checker) |
+| 🎨 | **KALIX // Portfolio**: photo, 3D motion, apparel, video | HTML · Tailwind · JS | [`luc1ferxzx-portfolio`](https://github.com/luc1ferxzx/luc1ferxzx-portfolio) |
 
-</div>
+### 🛰️ PHILIP — the capstone
+> A geospatial, AI-driven disaster response system. It scores **individual** flood and landslide
+> risk from GPS, elevation, and slope data, and keeps working **offline-first** when towers go down.
 
-### 🧱 Stack
+---
+
+## 🏆 trophies
+
+```text
+$ ./achievements --list
+  [🥈]  UCLM Hackathon ........................ 2nd place
+  [🎨]  UCLM Hackathon ........................ Best in UI/UX
+  [🏅]  Hack4Gov 2025
+  [🏅]  Sinulog PropTech Hackathon
+  [🏅]  7th place  +  Team Finalist
+```
+
+---
+
+## 📊 telemetry
 
 <p align="center">
-  <img src="https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP" />
-  <img src="https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel" />
-  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript" />
-  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
-  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js" />
-  <img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white" alt="Flutter" />
-  <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React" />
-  <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
-  <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5" />
-  <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3" />
-  <img src="https://img.shields.io/badge/C-A8B9CC?style=for-the-badge&logo=c&logoColor=black" alt="C" />
-  <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java" />
-  <img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black" alt="Linux" />
-  <img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white" alt="Figma" />
-  <img src="https://img.shields.io/badge/Photoshop-31A8FF?style=for-the-badge&logo=adobephotoshop&logoColor=white" alt="Photoshop" />
-  <img src="https://img.shields.io/badge/Illustrator-FF9A00?style=for-the-badge&logo=adobeillustrator&logoColor=white" alt="Illustrator" />
-  <img src="https://img.shields.io/badge/After_Effects-9999FF?style=for-the-badge&logo=adobeaftereffects&logoColor=white" alt="After Effects" />
-  <img src="https://img.shields.io/badge/Premiere_Pro-9999FF?style=for-the-badge&logo=adobepremierepro&logoColor=white" alt="Premiere Pro" />
-  <img src="https://img.shields.io/badge/Blender-E87D0D?style=for-the-badge&logo=blender&logoColor=white" alt="Blender" />
+  <img height="170" alt="GitHub stats" src="https://github-readme-stats.vercel.app/api?username=luc1ferxzx&show_icons=true&theme=dark&hide_border=true&bg_color=000000&title_color=00FF41&icon_color=00FF41&text_color=00FF41&ring_color=00FF41" />
+  <img height="170" alt="Top languages" src="https://github-readme-stats.vercel.app/api/top-langs/?username=luc1ferxzx&layout=compact&hide_border=true&bg_color=000000&title_color=00FF41&text_color=00FF41" />
 </p>
 
-### 💼 Work Stack · 365 Easy Ltd.
-> Building and maintaining SharePoint sites, workflows, and Power Platform solutions, from
-> requirements gathering through deployment.
-
 <p align="center">
-  <img src="https://img.shields.io/badge/SharePoint-0078D4?style=for-the-badge&logo=microsoftsharepoint&logoColor=white" alt="SharePoint" />
-  <img src="https://img.shields.io/badge/Power_Apps-742774?style=for-the-badge&logoColor=white" alt="Power Apps" />
-  <img src="https://img.shields.io/badge/Power_Automate-0066FF?style=for-the-badge&logoColor=white" alt="Power Automate" />
-  <img src="https://img.shields.io/badge/Power_BI-F2C811?style=for-the-badge&logoColor=black" alt="Power BI" />
-  <img src="https://img.shields.io/badge/SharePoint_Custom_Dev-0078D4?style=for-the-badge&logoColor=white" alt="SharePoint Custom Development" />
-</p>
-
-### 🔗 LinkedIn Stack
-> Power Apps · Power Automate · SharePoint · Azure · AI Solutions
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Power_Apps-742774?style=for-the-badge&logoColor=white" alt="Power Apps" />
-  <img src="https://img.shields.io/badge/Power_Automate-0066FF?style=for-the-badge&logoColor=white" alt="Power Automate" />
-  <img src="https://img.shields.io/badge/SharePoint-0078D4?style=for-the-badge&logo=microsoftsharepoint&logoColor=white" alt="SharePoint" />
-  <img src="https://img.shields.io/badge/Azure-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white" alt="Azure" />
-  <img src="https://img.shields.io/badge/AI_Solutions-A30000?style=for-the-badge&logoColor=white" alt="AI Solutions" />
+  <img alt="GitHub streak" src="https://streak-stats.demolab.com?user=luc1ferxzx&hide_border=true&background=000000&ring=00FF41&fire=00FF41&currStreakLabel=00FF41&sideLabels=00FF41&dates=00FF41&stroke=00FF41" />
 </p>
 
 ---
 
-## 🚀 Featured Projects
+## 📡 uplink
 
-### 🛰️ PHILIP: Philippine Hazard Intelligence & Response Platform
-> My capstone. A geospatial, AI-driven disaster response system that scores **individual** flood and
-> landslide risk from GPS, elevation and slope data, and works **offline-first** when towers go down.
-
-**Stack:** Flutter · React · Node.js (Express) · FastAPI · PostGIS · Scikit-learn
-&nbsp;→&nbsp; [**View repo**](https://github.com/luc1ferxzx/Philip_GDRMS)
-
-### 🏪 FILGASPAND
-> A Laravel pharmacy and e-commerce app built for the IT-ELECT2 course. Carts, orders, invoices,
-> product management, role-based access, and a ban-aware middleware layer.
-
-**Stack:** Laravel · Blade
-&nbsp;→&nbsp; [**View repo**](https://github.com/luc1ferxzx/FILGASPAND-)
-
-### 🏢 Midterm Laravel Project
-> Laravel app with authentication, user profiles, and building management, built end-to-end with
-> the Laravel starter kit.
-
-**Stack:** Laravel · Blade
-&nbsp;→&nbsp; [**View repo**](https://github.com/luc1ferxzx/MidtermLaravelProject)
-
-### 🔍 kavvh-ip-checker
-> A lightweight Python tool for checking IP addresses. Small, sharp, and built to be extended.
-
-**Stack:** Python
-&nbsp;→&nbsp; [**View repo**](https://github.com/luc1ferxzx/kavvh-ip-checker)
-
-### 🎨 KALIX // Portfolio
-> My creative portfolio: Photoshop manipulations, 3D motion, brand apparel, and video editing,
-> presented in a dark, high-contrast interface.
-
-**Stack:** HTML · Tailwind CSS · JavaScript
-&nbsp;→&nbsp; [**View repo**](https://github.com/luc1ferxzx/luc1ferxzx-portfolio)
-
----
-
-## 🏆 Hackathons & Recognition
-
-| Achievement | Event |
-| :--- | :--- |
-| 🥈 **2nd Place** | UCLM Hackathon |
-| 🎨 **Best in UI/UX** | UCLM Hackathon |
-| 🏅 **Hack4Gov 2025** | Hack4Gov |
-| 🏅 **Sinulog PropTech Hackathon** | Sinulog PropTech |
-| 🏅 **7th Place** and **Team Finalist** | Hackathon finishes |
-
----
-
-## 📊 GitHub Stats
+```text
+$ ping kal1x
+```
 
 <p align="center">
-  <img height="180" alt="Kyle's GitHub stats" src="https://github-readme-stats.vercel.app/api?username=luc1ferxzx&show_icons=true&theme=radical&hide_border=true&bg_color=0d1117&title_color=A30000&icon_color=A30000" />
-  <img height="180" alt="Top languages" src="https://github-readme-stats.vercel.app/api/top-langs/?username=luc1ferxzx&layout=compact&theme=radical&hide_border=true&bg_color=0d1117&title_color=A30000" />
-</p>
-
-<p align="center">
-  <img alt="GitHub streak" src="https://streak-stats.demolab.com?user=luc1ferxzx&theme=radical&hide_border=true&background=0D1117&ring=A30000&fire=A30000&currStreakLabel=A30000" />
+  <a href="https://www.linkedin.com/in/kyle-peralta-415036324/"><img src="https://img.shields.io/badge/LinkedIn-kyle__peralta-00FF41?style=for-the-badge&labelColor=000000&logo=linkedin&logoColor=00FF41" alt="LinkedIn" /></a>
+  <a href="https://github.com/luc1ferxzx/luc1ferxzx-portfolio"><img src="https://img.shields.io/badge/Portfolio-KALIX-00FF41?style=for-the-badge&labelColor=000000" alt="Portfolio" /></a>
 </p>
 
 ---
 
-## 🔭 Currently
-
-- 💼 Shipping SharePoint and Power Platform solutions at **365 Easy Ltd.**
-- 🔨 Building **PHILIP** and its ML risk engine
-- 🎬 Editing motion and 3D pieces for the portfolio
-- 🛡️ Sharpening web security and OSINT skills for CTFs and hackathons
-
----
-
-## 📬 Let's Connect
-
-<p align="center">
-  <a href="https://www.linkedin.com/in/kyle-peralta-415036324/"><img src="https://img.shields.io/badge/LinkedIn-Kyle_Peralta-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
-  <a href="https://github.com/luc1ferxzx/luc1ferxzx-portfolio"><img src="https://img.shields.io/badge/Portfolio-KALIX-A30000?style=for-the-badge" alt="Portfolio" /></a>
-</p>
+```text
+  ┌─────────────────────────────────────────────┐
+  │  [ EOF ]  connection closed. stay curious.  │
+  └─────────────────────────────────────────────┘
+```
 
 <div align="center">
-
-<h3>✦ &nbsp;To Live is to Create. To Create is Reality.&nbsp; ✦</h3>
-
-<sub>Made with too much coffee and a stubborn refusal to ship ugly UI.</sub>
-
+<sub><code>// To Live is to Create. To Create is Reality.</code></sub>
 </div>
