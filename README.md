@@ -1,7 +1,5 @@
 <a href="https://luc1ferxzx.github.io/luc1ferxzx/"><img src="assets/boot.svg" alt="kal1x boots, logs in and runs neofetch. Click to open a terminal you can type in." width="100%" /></a>
 
-<p align="center"><a href="https://luc1ferxzx.github.io/luc1ferxzx/"><code>$ ssh kal1x@kalix  # click to log in and type</code></a></p>
-
 <pre>
 KAL1X(1)                     User Commands                      KAL1X(1)
 
@@ -9,55 +7,107 @@ KAL1X(1)                     User Commands                      KAL1X(1)
        kal1x - builds software, breaks software, edits the video about it
 
 <b>SYNOPSIS</b>
-       <b>kal1x</b> [<b>--sharepoint</b>] [<b>--power-platform</b>] [<b>--laravel</b>] [<b>--flutter</b>]
-             [<b>--after-effects</b>] [<b>--no-sleep</b>] <i>idea</i>
-
-<b>DESCRIPTION</b>
-       Kyle Peralta. Full Stack Power Platform Developer at 365 Easy.
-       BSIT at the University of Cebu (UCLM). Metro Cebu, Philippines.
-
-       Works on SharePoint and Power Platform solutions by day. Spends the
-       rest of the time on hackathons, security and motion graphics.
+       <b>kal1x</b> [<b>--about</b>] [<b>--work</b>] [<b>--stack</b>] [<b>--projects</b>] [<b>--awards</b>]
+             [<b>--contact</b>]
 
 <b>OPTIONS</b>
-       <b>--work</b>      Power Apps, Power Automate, Power BI, SharePoint, Azure
-       <b>--web</b>       PHP, Laravel, JavaScript, TypeScript, Node.js, React
-       <b>--data</b>      Python, FastAPI, PostgreSQL, PostGIS
-       <b>--mobile</b>    Flutter
-       <b>--systems</b>   C, Java, Linux
-       <b>--security</b>  web app security, OSINT, forensics, crypto, reversing
-       <b>--design</b>    Photoshop, Illustrator, Figma, Blender, After Effects,
-                   Premiere Pro
+       Click a command to run it.
+</pre>
 
-<b>PROJECTS</b>
-       <a href="https://github.com/luc1ferxzx/Philip_GDRMS"><b>philip</b></a>(1)
-              Flood and landslide risk scored per person, with offline
-              evacuation guidance. Capstone thesis.
+<details name="kal1x">
+<summary><code>$ kal1x --about</code></summary>
 
-       <a href="https://github.com/luc1ferxzx/FILGASPAND-"><b>filgaspand</b></a>(1)
-              Pharmacy store in Laravel. Cart, checkout, invoices, admin.
+<pre>
+Kyle Peralta, also kal1x.
+Full Stack Power Platform Developer at 365 Easy.
+BSIT at the University of Cebu (UCLM). Metro Cebu, Philippines.
 
-       <a href="https://github.com/luc1ferxzx/kavvh-ip-checker"><b>kavvh-ip-checker</b></a>(1)
-              IP address checker in Python. Class, binary form and a
-              timestamped log. Team project.
+Works on SharePoint and Power Platform solutions by day.
+Spends the rest of the time on hackathons, security and motion graphics.
+</pre>
 
-       <a href="https://github.com/luc1ferxzx/MidtermLaravelProject"><b>midterm</b></a>(1)
-              Building records in Laravel, behind auth.
+</details>
 
-       <a href="https://github.com/luc1ferxzx/luc1ferxzx-portfolio"><b>portfolio</b></a>(1)
-              Photo editing, 3D motion, apparel and video.
+<details name="kal1x" open>
+<summary><code>$ kal1x --work</code></summary>
 
-<b>HISTORY</b>
-       UCLM Hackathon              2nd place, Best in UI/UX
-       Sinulog PropTech Hackathon  team finalist
-       12th ICT Congress           hackathon award
-       Hack4Gov 2025               national cybersecurity competition
+<pre>
+365 Easy Ltd.  2026 - present
+Full Stack Power Platform Developer
 
+  SharePoint sites, features and workflows
+  Power Apps, Power Automate and Power BI solutions
+  SharePoint custom development
+</pre>
+
+</details>
+
+<details name="kal1x">
+<summary><code>$ kal1x --stack</code></summary>
+
+<pre>
+work      Power Apps, Power Automate, Power BI, SharePoint, Azure
+web       PHP, Laravel, JavaScript, TypeScript, Node.js, React
+data      Python, FastAPI, PostgreSQL, PostGIS
+mobile    Flutter
+systems   C, Java, Linux
+security  web app security, OSINT, forensics, crypto, reversing
+design    Photoshop, Illustrator, Figma, Blender, After Effects, Premiere Pro
+</pre>
+
+</details>
+
+<details name="kal1x">
+<summary><code>$ kal1x --projects</code></summary>
+
+<pre>
+<a href="https://github.com/luc1ferxzx/Philip_GDRMS"><b>philip</b></a>
+  Flood and landslide risk scored per person, with offline
+  evacuation guidance. Capstone thesis.
+
+<a href="https://github.com/luc1ferxzx/FILGASPAND-"><b>filgaspand</b></a>
+  Pharmacy store in Laravel. Cart, checkout, invoices, admin.
+
+<a href="https://github.com/luc1ferxzx/kavvh-ip-checker"><b>kavvh-ip-checker</b></a>
+  IP address checker in Python. Team project.
+
+<a href="https://github.com/luc1ferxzx/MidtermLaravelProject"><b>midterm</b></a>
+  Building records in Laravel, behind auth.
+
+<a href="https://github.com/luc1ferxzx/luc1ferxzx-portfolio"><b>portfolio</b></a>
+  Photo editing, 3D motion, apparel and video.
+</pre>
+
+</details>
+
+<details name="kal1x">
+<summary><code>$ kal1x --awards</code></summary>
+
+<pre>
+UCLM Hackathon              2nd place, Best in UI/UX
+Sinulog PropTech Hackathon  team finalist
+12th ICT Congress           hackathon award
+Hack4Gov 2025               national cybersecurity competition
+</pre>
+
+</details>
+
+<details name="kal1x">
+<summary><code>$ kal1x --contact</code></summary>
+
+<pre>
+<a href="https://www.linkedin.com/in/kyle-peralta-415036324/">LinkedIn</a>
+<a href="https://github.com/luc1ferxzx">GitHub</a>
+</pre>
+
+</details>
+
+<pre>
 <b>BUGS</b>
        None known. That is not the same as none.
 
 <b>SEE ALSO</b>
-       <a href="https://luc1ferxzx.github.io/luc1ferxzx/">shell</a>(1), <a href="https://www.linkedin.com/in/kyle-peralta-415036324/">linkedin</a>(1)
+       <a href="https://luc1ferxzx.github.io/luc1ferxzx/">shell</a>(1), the same commands, but you can type them
 
 <b>NOTES</b>
        To live is to create. To create is reality.

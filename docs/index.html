@@ -58,6 +58,73 @@ const LINKS = {
   linkedin: 'https://www.linkedin.com/in/kyle-peralta-415036324/'
 };
 const HOME = '/home/kal1x';
+const SECTIONS = {
+  about: `Kyle Peralta, also kal1x.
+Full Stack Power Platform Developer at 365 Easy.
+BSIT at the University of Cebu (UCLM). Metro Cebu, Philippines.
+
+Works on SharePoint and Power Platform solutions by day.
+Spends the rest of the time on hackathons, security and motion graphics.
+`,
+  work: `365 Easy Ltd.  2026 - present
+Full Stack Power Platform Developer
+
+  SharePoint sites, features and workflows
+  Power Apps, Power Automate and Power BI solutions
+  SharePoint custom development
+`,
+  stack: `work      Power Apps, Power Automate, Power BI, SharePoint, Azure
+web       PHP, Laravel, JavaScript, TypeScript, Node.js, React
+data      Python, FastAPI, PostgreSQL, PostGIS
+mobile    Flutter
+systems   C, Java, Linux
+security  web app security, OSINT, forensics, crypto, reversing
+design    Photoshop, Illustrator, Figma, Blender, After Effects, Premiere Pro
+`,
+  projects: `philip
+  Flood and landslide risk scored per person, with offline
+  evacuation guidance. Capstone thesis.
+  ${LINKS.philip}
+
+filgaspand
+  Pharmacy store in Laravel. Cart, checkout, invoices, admin.
+  ${LINKS.filgaspand}
+
+kavvh-ip-checker
+  IP address checker in Python. Team project. Runs here too:
+  ip_checker 8.8.8.8
+  ${LINKS['kavvh-ip-checker']}
+
+midterm
+  Building records in Laravel, behind auth.
+  ${LINKS.midterm}
+
+portfolio
+  Photo editing, 3D motion, apparel and video.
+  ${LINKS.portfolio}
+`,
+  awards: `UCLM Hackathon              2nd place, Best in UI/UX
+Sinulog PropTech Hackathon  team finalist
+12th ICT Congress           hackathon award
+Hack4Gov 2025               national cybersecurity competition
+`,
+  contact: `LinkedIn  ${LINKS.linkedin}
+GitHub    ${LINKS.github}
+`
+};
+const FLAGS = ['--about', '--work', '--stack', '--projects', '--awards', '--contact', '--help', '--version'];
+const KAL1X_HELP = `usage: kal1x [OPTION]...
+
+  --about     who I am
+  --work      where I work and what I do there
+  --stack     tools and languages
+  --projects  things I built
+  --awards    hackathons and awards
+  --contact   where to find me
+  --version   print the version
+
+You can also type a flag on its own, like: --work
+`;
 const started = Date.now();
 
 /* ---------- filesystem (lives in memory, resets on refresh) ---------- */
@@ -67,9 +134,10 @@ function project(title, body, link) { return d({ README: f(`${title}\n\n${body}\
 const initialFS = () => d({
   home: d({ kal1x: d({
     '.plan': f('Keep building. Sleep eventually.\n'),
-    'about.txt': f('Kyle Peralta, also kal1x.\nFull Stack Power Platform Developer at 365 Easy.\nBSIT at the University of Cebu (UCLM). Metro Cebu, Philippines.\n\nWorks on SharePoint and Power Platform solutions by day.\nSpends the rest of the time on hackathons, security and motion graphics.\n'),
-    'stack.txt': f('work      Power Apps, Power Automate, Power BI, SharePoint, Azure\nweb       PHP, Laravel, JavaScript, TypeScript, Node.js, React\ndata      Python, FastAPI, PostgreSQL, PostGIS\nmobile    Flutter\nsystems   C, Java, Linux\nsecurity  web app security, OSINT, forensics, crypto, reversing\ndesign    Photoshop, Illustrator, Figma, Blender, After Effects, Premiere Pro\n'),
-    'hackathons.txt': f('UCLM Hackathon              2nd place, Best in UI/UX\nSinulog PropTech Hackathon  team finalist\n12th ICT Congress           hackathon award\nHack4Gov 2025               national cybersecurity competition\n'),
+    'about.txt': f(SECTIONS.about),
+    'work.txt': f(SECTIONS.work),
+    'stack.txt': f(SECTIONS.stack),
+    'awards.txt': f(SECTIONS.awards),
     'motto.txt': f('To live is to create. To create is reality.\n'),
     'contact.txt': f(`LinkedIn  ${LINKS.linkedin}\nGitHub    ${LINKS.github}\n`),
     projects: d({
@@ -284,10 +352,10 @@ function manPage() {
   const S = [];
   const sec = (t, ...b) => S.push({ t, b });
   sec('NAME', 'kal1x - builds software, breaks software, edits the video about it');
-  sec('SYNOPSIS', 'kal1x [--sharepoint] [--power-platform] [--laravel] [--flutter] [--after-effects] [--no-sleep] idea');
+  sec('SYNOPSIS', 'kal1x [--about] [--work] [--stack] [--projects] [--awards] [--contact]');
   sec('DESCRIPTION', 'Kyle Peralta. Full Stack Power Platform Developer at 365 Easy. BSIT at the University of Cebu (UCLM). Metro Cebu, Philippines.', 'Works on SharePoint and Power Platform solutions by day. Spends the rest of the time on hackathons, security and motion graphics.');
-  sec('OPTIONS', '--work      Power Apps, Power Automate, Power BI, SharePoint, Azure', '--web       PHP, Laravel, JavaScript, TypeScript, Node.js, React', '--data      Python, FastAPI, PostgreSQL, PostGIS', '--mobile    Flutter', '--systems   C, Java, Linux', '--security  web app security, OSINT, forensics, crypto, reversing', '--design    Photoshop, Illustrator, Figma, Blender, After Effects, Premiere Pro');
-  sec('FILES', '~/about.txt  ~/stack.txt  ~/hackathons.txt  ~/projects/');
+  sec('OPTIONS', '--about     who I am', '--work      where I work and what I do there', '--stack     tools and languages', '--projects  things I built', '--awards    hackathons and awards', '--contact   where to find me');
+  sec('FILES', '~/about.txt  ~/work.txt  ~/stack.txt  ~/awards.txt  ~/projects/');
   sec('BUGS', 'None known. That is not the same as none.');
   sec('SEE ALSO', 'neofetch(1), ip_checker(1), gh(1), open(1)');
   sec('NOTES', 'To live is to create. To create is reality.');
@@ -310,7 +378,8 @@ not on a server. Files you change are gone when you refresh.
 
 look around   ls  cd  pwd  cat  tree  find  grep  head  tail  wc  sort
 change files  touch  mkdir  rm  cp  mv  echo text > file
-me            neofetch  man kal1x  whoami  gh repo list  open <name>
+me            kal1x --work  --awards  --projects  --stack  --about  --contact
+              neofetch  man kal1x  gh repo list  open <name>
 real code     ip_checker 8.8.8.8
 system        history  clear  date  uptime  uname  env  reboot  exit
 
@@ -319,6 +388,19 @@ Tab completes names. Up and down walk through history.
 `;
 const cmds = {
   help(a, c) { c.out(HELP); return 0; },
+  kal1x(a, c) {
+    if (!a.length) { c.out(KAL1X_HELP); return 0; }
+    let st = 0;
+    a.forEach((flag, i) => {
+      const k = flag.replace(/^--/, '');
+      if (flag === '--help') c.out(KAL1X_HELP);
+      else if (flag === '--version') c.out('kal1x 1.0\n');
+      else if (flag.startsWith('--') && Object.prototype.hasOwnProperty.call(SECTIONS, k)) {
+        c.out((i ? '\n' : '') + SECTIONS[k]);
+      } else { c.err(`kal1x: unrecognized option '${flag}'\nTry: kal1x --help`); st = 2; }
+    });
+    return st;
+  },
   pwd(a, c) { c.out(cwd + '\n'); return 0; },
   whoami(a, c) { c.out('kal1x\n'); return 0; },
   hostname(a, c) { c.out('kalix\n'); return 0; },
@@ -662,7 +744,8 @@ async function execCmd(cmd, stdin, tty) {
     else if (n.d) { c.err(`bash: ${name}: Is a directory`); st = 126; }
     else if (!n.x) { c.err(`bash: ${name}: Permission denied`); st = 126; }
     else st = runIpChecker(args, c);
-  } else if (Object.prototype.hasOwnProperty.call(cmds, name)) st = await cmds[name](args, c);
+  } else if (name.startsWith('--')) st = cmds.kal1x(argv, c);
+  else if (Object.prototype.hasOwnProperty.call(cmds, name)) st = await cmds[name](args, c);
   else { c.err(`bash: ${name}: command not found`); st = 127; }
   if (cmd.redir) {
     const { dir, name: fn } = parent(cmd.redir.path), ex = node(cmd.redir.path);
@@ -695,6 +778,17 @@ function complete() {
   const word = m ? m[2] : '', start = v.length - word.length;
   const first = !v.slice(0, start).trim() || /[|;&]\s*$/.test(v.slice(0, start));
   let cands = [];
+  if (word.startsWith('-') && (first || /(^|[|;&]\s*)kal1x\s/.test(v.slice(0, start)))) {
+    cands = FLAGS.filter((x) => x.startsWith(word)).map((x) => x + ' ');
+    if (!cands.length) return;
+    let p = cands[0];
+    for (const x of cands) while (!x.startsWith(p)) p = p.slice(0, -1);
+    if (cands.length === 1 || p.length > word.length) {
+      $in.value = v.slice(0, start) + p + after;
+      $in.setSelectionRange(start + p.length, start + p.length);
+    } else { echoCmd($in.value); print(cands.map((x) => x.trim()).join('  ') + '\n'); }
+    return;
+  }
   const slash = word.lastIndexOf('/');
   const base = slash >= 0 ? word.slice(0, slash + 1) : '', stem = word.slice(slash + 1);
   if (first && slash < 0) cands = Object.keys(cmds).filter((k) => k.startsWith(stem)).map((k) => k + ' ');
@@ -761,7 +855,7 @@ async function boot(instant) {
   $out.replaceChildren();
   echoCmd('neofetch');
   $out.append(neofetchEl());
-  print("You can type here. Try 'help', 'ls', 'man kal1x' or 'ip_checker 8.8.8.8'.\n", 'dim');
+  print("You can type here. Try '--work', '--awards', 'kal1x --help' or 'help'.\n", 'dim');
   skip = true;
   ready();
 }
