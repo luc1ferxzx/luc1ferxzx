@@ -1,0 +1,801 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>kal1x tty1</title>
+<meta name="description" content="A terminal you can type in. Kyle Peralta's portfolio as a shell.">
+<link rel="icon" href="data:,">
+<style>
+  :root {
+    --bg: #000; --fg: #d3d7cf; --dim: #888a85; --green: #8ae234;
+    --blue: #729fcf; --red: #ef2929; --err: #ef2929;
+    --mono: 'DejaVu Sans Mono', Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--fg); }
+  body { font: 14px/1.3 var(--mono); min-height: 100vh; min-height: 100dvh; }
+  #term { padding: 14px 16px 40px; }
+  .l { white-space: pre-wrap; overflow-wrap: anywhere; min-height: 1.3em; }
+  .art { white-space: pre; line-height: 1.12; min-height: 0; color: var(--red); }
+  .dim { color: var(--dim); } .err { color: var(--err); } .g { color: var(--green); }
+  .b { color: var(--blue); } .r { color: var(--red); } .bold { font-weight: bold; color: #eeeeec; }
+  a { color: var(--blue); }
+  a:focus-visible { outline: 1px solid var(--fg); }
+  #row { display: flex; }
+  #row[hidden] { display: none; }
+  #ps { white-space: pre; flex: none; }
+  #in {
+    flex: 1; min-width: 0; padding: 0; border: 0; outline: 0; background: transparent;
+    color: inherit; font: inherit; caret-color: var(--fg);
+  }
+  .ls { display: flex; flex-wrap: wrap; gap: 0 2ch; }
+  .fetch { display: flex; flex-wrap: wrap; gap: 0 3ch; margin: 4px 0; }
+  .sw { display: inline-block; width: 2ch; height: 1.3em; vertical-align: top; }
+  @media (pointer: coarse) { #in { font-size: 16px; } }
+</style>
+</head>
+<body>
+<main id="term" role="log" aria-label="Terminal">
+  <div id="out"></div>
+  <div id="row" hidden>
+    <span id="ps"></span>
+    <input id="in" aria-label="Type a command" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="send">
+  </div>
+</main>
+<noscript><p>This terminal needs JavaScript. <a href="https://github.com/luc1ferxzx">Read the profile instead.</a></p></noscript>
+
+<script>
+'use strict';
+const $out = document.getElementById('out'), $row = document.getElementById('row'),
+      $in = document.getElementById('in'), $ps = document.getElementById('ps');
+const GH = 'https://github.com/luc1ferxzx/';
+const RAW = 'https://raw.githubusercontent.com/luc1ferxzx/';
+const LINKS = {
+  philip: GH + 'Philip_GDRMS', filgaspand: GH + 'FILGASPAND-',
+  'kavvh-ip-checker': GH + 'kavvh-ip-checker', midterm: GH + 'MidtermLaravelProject',
+  portfolio: GH + 'luc1ferxzx-portfolio', github: 'https://github.com/luc1ferxzx',
+  linkedin: 'https://www.linkedin.com/in/kyle-peralta-415036324/'
+};
+const HOME = '/home/kal1x';
+const started = Date.now();
+
+/* ---------- filesystem (lives in memory, resets on refresh) ---------- */
+const f = (text, x) => ({ f: text, x: !!x });
+const d = (kids) => ({ d: kids });
+function project(title, body, link) { return d({ README: f(`${title}\n\n${body}\n\n${link}\n`) }); }
+const initialFS = () => d({
+  home: d({ kal1x: d({
+    '.plan': f('Keep building. Sleep eventually.\n'),
+    'about.txt': f('Kyle Peralta, also kal1x.\nFull Stack Power Platform Developer at 365 Easy.\nBSIT at the University of Cebu (UCLM). Metro Cebu, Philippines.\n\nWorks on SharePoint and Power Platform solutions by day.\nSpends the rest of the time on hackathons, security and motion graphics.\n'),
+    'stack.txt': f('work      Power Apps, Power Automate, Power BI, SharePoint, Azure\nweb       PHP, Laravel, JavaScript, TypeScript, Node.js, React\ndata      Python, FastAPI, PostgreSQL, PostGIS\nmobile    Flutter\nsystems   C, Java, Linux\nsecurity  web app security, OSINT, forensics, crypto, reversing\ndesign    Photoshop, Illustrator, Figma, Blender, After Effects, Premiere Pro\n'),
+    'hackathons.txt': f('UCLM Hackathon              2nd place, Best in UI/UX\nSinulog PropTech Hackathon  team finalist\n12th ICT Congress           hackathon award\nHack4Gov 2025               national cybersecurity competition\n'),
+    'motto.txt': f('To live is to create. To create is reality.\n'),
+    'contact.txt': f(`LinkedIn  ${LINKS.linkedin}\nGitHub    ${LINKS.github}\n`),
+    projects: d({
+      philip: project('PHILIP', 'Flood and landslide risk scored per person, with offline\nevacuation guidance. Capstone thesis.\nFlutter, React, Node.js, FastAPI, PostGIS.', LINKS.philip),
+      filgaspand: project('FILGASPAND', 'Pharmacy store in Laravel. Cart, checkout, invoices, admin.', LINKS.filgaspand),
+      'kavvh-ip-checker': d({
+        README: f(`KAVVH IP checker\n\nIPv4 and IPv6 checker. Team project with Marielle, Veejay and Vhengie.\nThe Python original is ported to this shell, so it actually runs:\n\n  ip_checker 8.8.8.8\n\nEvery result is logged to ~/ip_log.txt, like the original.\nRead the real source with: cat ip_checker.py\n\n${LINKS['kavvh-ip-checker']}\n`),
+        'ip_checker.py': { r: RAW + 'kavvh-ip-checker/HEAD/ip_checker.py', x: true }
+      }),
+      midterm: project('Midterm Laravel Project', 'Building records in Laravel, behind auth.', LINKS.midterm),
+      portfolio: project('KALIX portfolio', 'Photo editing, 3D motion, apparel and video.', LINKS.portfolio)
+    })
+  }) }),
+  etc: d({
+    hostname: f('kalix\n'),
+    'os-release': f('NAME="KAL1X GNU/Linux"\nPRETTY_NAME="KAL1X GNU/Linux (simulated in your browser)"\nHOME_URL="https://github.com/luc1ferxzx"\n')
+  }),
+  tmp: d({})
+});
+
+let fs, cwd, oldpwd, lastStatus, hist, histPos;
+const env = () => ({ USER: 'kal1x', HOME, PWD: cwd, OLDPWD: oldpwd, SHELL: '/bin/bash', HOSTNAME: 'kalix', TERM: 'linux', '?': String(lastStatus) });
+
+function abs(p) {
+  if (p === '~' || p.startsWith('~/')) p = HOME + p.slice(1);
+  const parts = (p.startsWith('/') ? p : cwd + '/' + p).split('/');
+  const st = [];
+  for (const s of parts) { if (!s || s === '.') continue; if (s === '..') st.pop(); else st.push(s); }
+  return '/' + st.join('/');
+}
+function node(path) {
+  let n = fs;
+  for (const s of abs(path).split('/').filter(Boolean)) {
+    if (!n.d || !Object.prototype.hasOwnProperty.call(n.d, s)) return null;
+    n = n.d[s];
+  }
+  return n;
+}
+function parent(path) {
+  const a = abs(path), i = a.lastIndexOf('/');
+  return { dir: node(a.slice(0, i) || '/'), name: a.slice(i + 1) };
+}
+function pretty(p) { return p === HOME ? '~' : p.startsWith(HOME + '/') ? '~' + p.slice(HOME.length) : p; }
+async function read(n) {
+  if (n.f !== undefined) return n.f;
+  if (n.cache) return n.cache;
+  const res = await fetch(n.r);
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  return (n.cache = await res.text());
+}
+const size = (n) => n.d ? 4096 : n.f !== undefined ? new Blob([n.f]).size : 4096;
+
+/* ---------- output ---------- */
+function line(cls) { const e = document.createElement('div'); e.className = 'l' + (cls ? ' ' + cls : ''); $out.append(e); return e; }
+function fill(el, text) {
+  const re = /https:\/\/[\w.\-\/~%#?=&+]+/g; let i = 0, m;
+  while ((m = re.exec(text))) {
+    el.append(text.slice(i, m.index));
+    const a = document.createElement('a');
+    a.href = m[0]; a.textContent = m[0]; a.target = '_blank'; a.rel = 'noopener noreferrer';
+    el.append(a); i = m.index + m[0].length;
+  }
+  el.append(text.slice(i));
+}
+function print(text, cls) {
+  if (text === '') return;
+  const body = text.endsWith('\n') ? text.slice(0, -1) : text;
+  fill(line(cls), body);
+  toEnd();
+}
+function toEnd() { window.scrollTo(0, document.documentElement.scrollHeight); }
+const span = (cls, t) => { const s = document.createElement('span'); if (cls) s.className = cls; s.textContent = t; return s; };
+function setPrompt() {
+  $ps.replaceChildren(span('g', 'kal1x@kalix'), ':', span('b', pretty(cwd)), '$ ');
+}
+function echoCmd(text) {
+  const l = line();
+  l.append(span('g', 'kal1x@kalix'), ':', span('b', pretty(cwd)), '$ ', text);
+}
+function cols() {
+  const probe = span('', '0'.repeat(10));
+  probe.style.cssText = 'position:absolute;visibility:hidden';
+  document.body.append(probe);
+  const w = probe.getBoundingClientRect().width / 10; probe.remove();
+  return Math.max(24, Math.floor(($out.clientWidth || 300) / (w || 8.4)));
+}
+function wrap(text, width, indent) {
+  const out = []; let cur = '';
+  for (const w of text.split(/\s+/)) {
+    if (cur && (cur + ' ' + w).length > width - indent) { out.push(' '.repeat(indent) + cur); cur = w; }
+    else cur = cur ? cur + ' ' + w : w;
+  }
+  if (cur) out.push(' '.repeat(indent) + cur);
+  return out.join('\n');
+}
+
+/* ---------- neofetch ---------- */
+const ART = [
+'██╗  ██╗ █████╗ ██╗      ██╗██╗  ██╗',
+'██║ ██╔╝██╔══██╗██║     ███║╚██╗██╔╝',
+'█████╔╝ ███████║██║     ╚██║ ╚███╔╝ ',
+'██╔═██╗ ██╔══██║██║      ██║ ██╔██╗ ',
+'██║  ██╗██║  ██║███████╗ ██║██╔╝ ██╗',
+'╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝ ╚═╝╚═╝  ╚═╝'].join('\n');
+function uptime() { const s = Math.floor((Date.now() - started) / 1000); return s < 60 ? `${s} secs` : `${Math.floor(s / 60)} mins, ${s % 60} secs`; }
+const INFO = () => [['Name', 'Kyle Peralta'], ['Work', 'Power Platform @ 365 Easy'], ['School', 'BSIT, UCLM'], ['Stack', 'SharePoint, Laravel, Flutter'], ['Sec', 'Hack4Gov 2025'], ['Design', 'After Effects, Blender'], ['Uptime', uptime()]];
+function neofetchEl() {
+  const wrapEl = document.createElement('div'); wrapEl.className = 'fetch';
+  const left = document.createElement('div');
+  const art = document.createElement('div'); art.className = 'art'; art.textContent = ART;
+  left.append(art, Object.assign(span('dim', '\nTo live is to create.\nTo create is reality.'), { style: 'white-space:pre' }));
+  const right = document.createElement('div');
+  right.append(Object.assign(document.createElement('div'), { className: 'l r', textContent: 'kal1x@kalix' }));
+  right.append(Object.assign(document.createElement('div'), { className: 'l r', textContent: '-----------' }));
+  for (const [k, v] of INFO()) {
+    const l = document.createElement('div'); l.className = 'l';
+    l.append(span('r', (k + ':').padEnd(8)), v); right.append(l);
+  }
+  for (const set of [['#000', '#c00', '#4e9a06', '#c4a000', '#3465a4', '#75507b', '#06989a', '#d3d7cf'], ['#555753', '#ef2929', '#8ae234', '#fce94f', '#729fcf', '#ad7fa8', '#34e2e2', '#eeeeec']]) {
+    const l = document.createElement('div'); l.className = 'l';
+    for (const c of set) { const s = span('sw', ''); s.style.background = c; l.append(s); }
+    right.append(l);
+  }
+  wrapEl.append(left, right);
+  return wrapEl;
+}
+
+/* ---------- ip_checker: port of kavvh-ip-checker/ip_checker.py ---------- */
+function parseV4(s) {
+  const p = s.split('.');
+  if (p.length !== 4) return null;
+  for (const o of p) if (!/^\d{1,3}$/.test(o) || +o > 255 || (o.length > 1 && o[0] === '0')) return null;
+  return p.map(Number);
+}
+function parseV6(s) {
+  if (!s.includes(':') || (s.match(/::/g) || []).length > 1) return null;
+  const last = s.slice(s.lastIndexOf(':') + 1);
+  if (last.includes('.')) {
+    const v4 = parseV4(last); if (!v4) return null;
+    s = s.slice(0, s.lastIndexOf(':') + 1) + ((v4[0] << 8) | v4[1]).toString(16) + ':' + ((v4[2] << 8) | v4[3]).toString(16);
+  }
+  const split = (x) => x === '' ? [] : x.split(':');
+  let g;
+  if (s.includes('::')) {
+    const [a, b] = s.split('::'); const A = split(a), B = split(b);
+    if (A.length + B.length > 7) return null;
+    g = [...A, ...Array(8 - A.length - B.length).fill('0'), ...B];
+  } else g = s.split(':');
+  if (g.length !== 8 || !g.every((h) => /^[0-9a-fA-F]{1,4}$/.test(h))) return null;
+  return g.map((h) => parseInt(h, 16));
+}
+function compress6(g) {
+  let best = -1, len = 0;
+  for (let i = 0; i < 8;) {
+    if (g[i] !== 0) { i++; continue; }
+    let j = i; while (j < 8 && g[j] === 0) j++;
+    if (j - i > len) { best = i; len = j - i; }
+    i = j;
+  }
+  const h = g.map((x) => x.toString(16));
+  if (len < 2) return h.join(':');
+  return h.slice(0, best).join(':') + '::' + h.slice(best + len).join(':');
+}
+function private4(o) {
+  const [a, b, c] = o;
+  return a === 0 || a === 10 || a === 127 || (a === 169 && b === 254) || (a === 172 && b >= 16 && b <= 31) ||
+    (a === 192 && b === 0 && c === 0) || (a === 192 && b === 0 && c === 2) || (a === 192 && b === 168) ||
+    (a === 198 && (b === 18 || b === 19)) || (a === 198 && b === 51 && c === 100) || (a === 203 && b === 0 && c === 113) || a >= 240;
+}
+function private6(g) {
+  const unspecOrLoop = g.slice(0, 7).every((x) => x === 0) && g[7] <= 1;
+  return unspecOrLoop || (g[0] & 0xfe00) === 0xfc00 || (g[0] & 0xffc0) === 0xfe80 || (g[0] === 0x2001 && g[1] === 0x0db8);
+}
+function checkIp(input) {
+  const s = input.trim(), v4 = parseV4(s);
+  if (v4) {
+    const a = v4[0];
+    const cls = a < 128 ? 'Class A' : a < 192 ? 'Class B' : a < 224 ? 'Class C' : a < 240 ? 'Class D (Multicast)' : 'Class E (Reserved)';
+    return `  Type     : IPv4\n  Address  : ${v4.join('.')}\n  Binary   : ${v4.map((o) => o.toString(2).padStart(8, '0')).join('.')}\n  Class    : ${cls}\n  Visibility: ${private4(v4) ? 'Private' : 'Public'}`;
+  }
+  const v6 = parseV6(s);
+  if (v6) return `  Type     : IPv6\n  Address  : ${compress6(v6)}\n  Expanded : ${v6.map((x) => x.toString(16).padStart(4, '0')).join(':')}\n  Visibility: ${private6(v6) ? 'Private' : 'Public'}`;
+  return `  ERROR: '${input}' is not a valid IPv4 or IPv6 address.`;
+}
+function ipLog(input, result) {
+  const home = node(HOME); if (!home) return;
+  const t = new Date(), z = (n) => String(n).padStart(2, '0');
+  const stamp = `${t.getFullYear()}-${z(t.getMonth() + 1)}-${z(t.getDate())} ${z(t.getHours())}:${z(t.getMinutes())}:${z(t.getSeconds())}`;
+  const entry = `[${stamp}] Input: ${input}\n           Result: ${result}\n           ${'-'.repeat(50)}\n`;
+  const log = home.d['ip_log.txt'];
+  if (log && log.f !== undefined) log.f += entry; else home.d['ip_log.txt'] = f(entry);
+}
+function runIpChecker(args, c) {
+  if (!args.length) {
+    c.out(`${'='.repeat(40)}\n  KAVVH: IPv4 / IPv6 Address Checker\n  Team: Kyle, Marielle, Veejay, Vhengie\n${'='.repeat(40)}\nusage: ip_checker ADDRESS...\ntry:   ip_checker 8.8.8.8\n       ip_checker 2001:db8::1\nResults are saved to ~/ip_log.txt\n`);
+    return 0;
+  }
+  let st = 0;
+  for (const ip of args) {
+    const r = checkIp(ip);
+    if (r.startsWith('  ERROR')) st = 1;
+    ipLog(ip, r);
+    c.out('Result:\n' + r + '\n');
+  }
+  return st;
+}
+
+/* ---------- man page ---------- */
+function manPage() {
+  const w = Math.min(cols(), 76), ind = w >= 60 ? 7 : 2;
+  const head = (l, m, r) => { const g = Math.max(2, w - l.length - m.length - r.length); return l + ' '.repeat(g >> 1) + m + ' '.repeat(g - (g >> 1)) + r; };
+  const S = [];
+  const sec = (t, ...b) => S.push({ t, b });
+  sec('NAME', 'kal1x - builds software, breaks software, edits the video about it');
+  sec('SYNOPSIS', 'kal1x [--sharepoint] [--power-platform] [--laravel] [--flutter] [--after-effects] [--no-sleep] idea');
+  sec('DESCRIPTION', 'Kyle Peralta. Full Stack Power Platform Developer at 365 Easy. BSIT at the University of Cebu (UCLM). Metro Cebu, Philippines.', 'Works on SharePoint and Power Platform solutions by day. Spends the rest of the time on hackathons, security and motion graphics.');
+  sec('OPTIONS', '--work      Power Apps, Power Automate, Power BI, SharePoint, Azure', '--web       PHP, Laravel, JavaScript, TypeScript, Node.js, React', '--data      Python, FastAPI, PostgreSQL, PostGIS', '--mobile    Flutter', '--systems   C, Java, Linux', '--security  web app security, OSINT, forensics, crypto, reversing', '--design    Photoshop, Illustrator, Figma, Blender, After Effects, Premiere Pro');
+  sec('FILES', '~/about.txt  ~/stack.txt  ~/hackathons.txt  ~/projects/');
+  sec('BUGS', 'None known. That is not the same as none.');
+  sec('SEE ALSO', 'neofetch(1), ip_checker(1), gh(1), open(1)');
+  sec('NOTES', 'To live is to create. To create is reality.');
+  const body = S.map((s) => s.t + '\n' + s.b.map((p) => {
+    const m = /^(--\w+\s+)(.*)$/.exec(p);
+    if (!m) return wrap(p, w, ind);
+    if (w < 60) return ' '.repeat(ind) + m[1].trim() + '\n' + wrap(m[2], w, ind + 2);
+    return ' '.repeat(ind) + m[1] + wrap(m[2], w, ind + m[1].length).trimStart();
+  }).join('\n')).join('\n\n');
+  return head('KAL1X(1)', 'User Commands', 'KAL1X(1)') + '\n\n' + body + '\n\n' + head('kal1x 1.0', 'November 2026', 'KAL1X(1)') + '\n';
+}
+
+/* ---------- commands ---------- */
+function walk(path, n, fn) {
+  fn(path, n);
+  if (n.d) for (const k of Object.keys(n.d).sort()) walk(path.replace(/\/$/, '') + '/' + k, n.d[k], fn);
+}
+const HELP = `This is a small shell written in JavaScript. It runs in your browser,
+not on a server. Files you change are gone when you refresh.
+
+look around   ls  cd  pwd  cat  tree  find  grep  head  tail  wc  sort
+change files  touch  mkdir  rm  cp  mv  echo text > file
+me            neofetch  man kal1x  whoami  gh repo list  open <name>
+real code     ip_checker 8.8.8.8
+system        history  clear  date  uptime  uname  env  reboot  exit
+
+Pipes and redirects work:  cat stack.txt | grep -i web > web.txt
+Tab completes names. Up and down walk through history.
+`;
+const cmds = {
+  help(a, c) { c.out(HELP); return 0; },
+  pwd(a, c) { c.out(cwd + '\n'); return 0; },
+  whoami(a, c) { c.out('kal1x\n'); return 0; },
+  hostname(a, c) { c.out('kalix\n'); return 0; },
+  id(a, c) { c.out('uid=1000(kal1x) gid=1000(kal1x) groups=1000(kal1x),27(sudo)\n'); return 0; },
+  date(a, c) { c.out(new Date().toString() + '\n'); return 0; },
+  uptime(a, c) { c.out(`up ${uptime()}, 1 user\n`); return 0; },
+  uname(a, c) { c.out((a.includes('-a') ? 'Linux kalix 6.12.0-kal1x #1 SMP PREEMPT x86_64 GNU/Linux' : 'Linux') + '\n'); return 0; },
+  env(a, c) { const e = env(); c.out(Object.keys(e).filter((k) => k !== '?').map((k) => `${k}=${e[k]}`).join('\n') + '\n'); return 0; },
+  clear() { $out.replaceChildren(); return 0; },
+  history(a, c) { c.out(hist.map((h, i) => String(i + 1).padStart(5) + '  ' + h).join('\n') + (hist.length ? '\n' : '')); return 0; },
+  echo(a, c) { const n = a[0] === '-n'; c.out((n ? a.slice(1) : a).join(' ') + (n ? '' : '\n')); return 0; },
+  which(a, c) { let st = 0; for (const x of a) { if (cmds[x]) c.out('/usr/bin/' + x + '\n'); else st = 1; } return st; },
+  cd(a, c) {
+    let t = a[0] === undefined ? HOME : a[0];
+    if (t === '-') { t = oldpwd; c.out(t + '\n'); }
+    const n = node(t);
+    if (!n) { c.err(`bash: cd: ${t}: No such file or directory`); return 1; }
+    if (!n.d) { c.err(`bash: cd: ${t}: Not a directory`); return 1; }
+    oldpwd = cwd; cwd = abs(t); return 0;
+  },
+  ls(a, c) {
+    const fl = a.filter((x) => x.startsWith('-')).join(''), paths = a.filter((x) => !x.startsWith('-'));
+    const all = fl.includes('a'), long = fl.includes('l');
+    let st = 0; const targets = paths.length ? paths : ['.'];
+    targets.forEach((t, i) => {
+      const n = node(t);
+      if (!n) { c.err(`ls: cannot access '${t}': No such file or directory`); st = 2; return; }
+      if (targets.length > 1 && n.d) c.out((i ? '\n' : '') + t + ':\n');
+      const names = n.d ? Object.keys(n.d).filter((k) => all || !k.startsWith('.')).sort() : [t];
+      const get = (k) => n.d ? n.d[k] : n;
+      if (long) {
+        for (const k of names) {
+          const e = get(k);
+          c.out(`${e.d ? 'd' : '-'}${e.d || e.x ? 'rwxr-xr-x' : 'rw-r--r--'} 1 kal1x kal1x ${String(size(e)).padStart(5)} ${k}\n`);
+        }
+      } else if (c.tty) {
+        if (!names.length) return;
+        const row = document.createElement('div'); row.className = 'ls';
+        for (const k of names) { const e = get(k); row.append(span(e.d ? 'b bold' : e.x ? 'g' : '', k)); }
+        c.rich(row);
+      } else if (names.length) c.out(names.join('\n') + '\n');
+    });
+    return st;
+  },
+  async cat(a, c) {
+    if (!a.length) { c.out(c.stdin); return 0; }
+    let st = 0;
+    for (const p of a) {
+      const n = node(p);
+      if (!n) { c.err(`cat: ${p}: No such file or directory`); st = 1; continue; }
+      if (n.d) { c.err(`cat: ${p}: Is a directory`); st = 1; continue; }
+      try { c.out(await read(n)); }
+      catch (e) { c.err(`cat: ${p}: could not reach GitHub (${e.message})`); st = 1; }
+    }
+    return st;
+  },
+  async head(a, c) { return slice(a, c, 'head'); },
+  async tail(a, c) { return slice(a, c, 'tail'); },
+  async wc(a, c) {
+    const fl = a.filter((x) => x.startsWith('-')).join(''), paths = a.filter((x) => !x.startsWith('-'));
+    const count = (t) => { const L = (t.match(/\n/g) || []).length, W = (t.match(/\S+/g) || []).length, C = new Blob([t]).size;
+      const v = []; if (!fl || fl.includes('l')) v.push(L); if (!fl || fl.includes('w')) v.push(W); if (!fl || fl.includes('c')) v.push(C);
+      return v.map((x) => String(x).padStart(fl.length === 2 ? 0 : 7)).join(' '); };
+    if (!paths.length) { c.out(count(c.stdin) + '\n'); return 0; }
+    let st = 0;
+    for (const p of paths) {
+      const n = node(p);
+      if (!n || n.d) { c.err(`wc: ${p}: ${n ? 'Is a directory' : 'No such file or directory'}`); st = 1; continue; }
+      c.out(count(await read(n)) + ' ' + p + '\n');
+    }
+    return st;
+  },
+  async sort(a, c) {
+    const rev = a.includes('-r'), paths = a.filter((x) => !x.startsWith('-'));
+    let t = c.stdin;
+    if (paths.length) { const n = node(paths[0]); if (!n || n.d) { c.err(`sort: cannot read: ${paths[0]}`); return 2; } t = await read(n); }
+    const L = t.split('\n').filter((x, i, arr) => i < arr.length - 1 || x).sort();
+    if (rev) L.reverse();
+    c.out(L.length ? L.join('\n') + '\n' : ''); return 0;
+  },
+  async grep(a, c) {
+    const fl = a.filter((x) => /^-[a-zA-Z]+$/.test(x)).join(''), rest = a.filter((x) => !/^-[a-zA-Z]+$/.test(x));
+    if (!rest.length) { c.err('usage: grep [-i] [-n] [-v] [-r] PATTERN [FILE...]'); return 2; }
+    let re;
+    try { re = new RegExp(rest[0], fl.includes('i') ? 'i' : ''); } catch (e) { c.err('grep: invalid pattern'); return 2; }
+    let found = false;
+    const scan = (text, label) => {
+      const L = text.split('\n'); if (L[L.length - 1] === '') L.pop();
+      L.forEach((s, i) => { if (re.test(s) !== fl.includes('v')) { found = true; c.out((label ? label + ':' : '') + (fl.includes('n') ? (i + 1) + ':' : '') + s + '\n'); } });
+    };
+    const files = rest.slice(1);
+    if (!files.length && !fl.includes('r')) { scan(c.stdin, ''); return found ? 0 : 1; }
+    let st = 0;
+    for (const p of files.length ? files : ['.']) {
+      const n = node(p);
+      if (!n) { c.err(`grep: ${p}: No such file or directory`); st = 2; continue; }
+      if (n.d) {
+        if (!fl.includes('r')) { c.err(`grep: ${p}: Is a directory`); st = 2; continue; }
+        walk(p, n, (path, e) => { if (e.f !== undefined) scan(e.f, path.replace(/^\.\//, '')); });
+      } else scan(await read(n), files.length > 1 ? p : '');
+    }
+    return st || (found ? 0 : 1);
+  },
+  tree(a, c) {
+    const start = a[0] || '.', n = node(start);
+    if (!n || !n.d) { c.err(`tree: ${start}: not a directory`); return 1; }
+    let dirs = 0, files = 0, s = start + '\n';
+    const go = (e, pre) => {
+      const keys = Object.keys(e.d).filter((k) => !k.startsWith('.')).sort();
+      keys.forEach((k, i) => {
+        const end = i === keys.length - 1;
+        s += pre + (end ? '└── ' : '├── ') + k + '\n';
+        if (e.d[k].d) { dirs++; go(e.d[k], pre + (end ? '    ' : '│   ')); } else files++;
+      });
+    };
+    go(n, '');
+    c.out(s + `\n${dirs} directories, ${files} files\n`); return 0;
+  },
+  find(a, c) {
+    const i = a.indexOf('-name'), pat = i >= 0 ? a[i + 1] : null;
+    const start = a[0] && !a[0].startsWith('-') ? a[0] : '.', n = node(start);
+    if (!n) { c.err(`find: '${start}': No such file or directory`); return 1; }
+    const re = pat ? new RegExp('^' + pat.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*').replace(/\?/g, '.') + '$') : null;
+    walk(start, n, (p) => { if (!re || re.test(p.split('/').pop())) c.out(p + '\n'); });
+    return 0;
+  },
+  touch(a, c) {
+    let st = 0;
+    for (const p of a) { const { dir, name } = parent(p); if (!dir || !dir.d) { c.err(`touch: cannot touch '${p}': No such file or directory`); st = 1; } else if (!dir.d[name]) dir.d[name] = f(''); }
+    return st;
+  },
+  mkdir(a, c) {
+    let st = 0; const paths = a.filter((x) => !x.startsWith('-'));
+    if (!paths.length) { c.err('mkdir: missing operand'); return 1; }
+    for (const p of paths) {
+      const { dir, name } = parent(p);
+      if (!dir || !dir.d) { c.err(`mkdir: cannot create directory '${p}': No such file or directory`); st = 1; }
+      else if (dir.d[name]) { c.err(`mkdir: cannot create directory '${p}': File exists`); st = 1; }
+      else dir.d[name] = d({});
+    }
+    return st;
+  },
+  rm(a, c) {
+    const fl = a.filter((x) => x.startsWith('-')).join(''), paths = a.filter((x) => !x.startsWith('-'));
+    if (!paths.length) { c.err('rm: missing operand'); return 1; }
+    let st = 0;
+    for (const p of paths) {
+      const target = abs(p);
+      if (target === '/' || target === '/home' || target === HOME) { c.err(`rm: it is dangerous to operate recursively on '${p}'\nrm: nice try. reboot restores everything anyway.`); st = 1; continue; }
+      const { dir, name } = parent(p), n = node(p);
+      if (!n) { if (!fl.includes('f')) { c.err(`rm: cannot remove '${p}': No such file or directory`); st = 1; } continue; }
+      if (n.d && !/[rR]/.test(fl)) { c.err(`rm: cannot remove '${p}': Is a directory`); st = 1; continue; }
+      delete dir.d[name];
+      if (cwd === target || cwd.startsWith(target + '/')) { oldpwd = cwd; cwd = HOME; }
+    }
+    return st;
+  },
+  async cp(a, c) { return move(a, c, 'cp'); },
+  async mv(a, c) { return move(a, c, 'mv'); },
+  man(a, c) {
+    if (!a.length) { c.err('What manual page do you want?\nTry: man kal1x'); return 1; }
+    if (a[0] === 'kal1x' || a[0] === 'kyle') { c.out(manPage()); return 0; }
+    c.err(`No manual entry for ${a[0]}\nTry: man kal1x`); return 16;
+  },
+  neofetch(a, c) {
+    if (c.tty) { c.rich(neofetchEl()); return 0; }
+    c.out(ART + '\n' + INFO().map(([k, v]) => `${k}: ${v}`).join('\n') + '\n'); return 0;
+  },
+  ip_checker(a, c) { return runIpChecker(a, c); },
+  python3(a, c) {
+    if (a[0] && a[0].split('/').pop() === 'ip_checker.py') return runIpChecker(a.slice(1), c);
+    c.err('python3: this shell only has ip_checker.py\nTry: python3 ip_checker.py 8.8.8.8'); return 1;
+  },
+  python(a, c) { return cmds.python3(a, c); },
+  async gh(a, c) {
+    if (a[0] !== 'repo' || a[1] !== 'list') { c.err('usage: gh repo list'); return 1; }
+    try {
+      const res = await fetch('https://api.github.com/users/luc1ferxzx/repos?per_page=100&sort=updated');
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const rows = (await res.json()).filter((r) => !r.fork);
+      const w = Math.max(...rows.map((r) => r.name.length));
+      c.out(rows.map((r) => `${r.name.padEnd(w)}  ${(r.language || '-').padEnd(10)}  https://github.com/luc1ferxzx/${encodeURIComponent(r.name)}`).join('\n') + '\n');
+      return 0;
+    } catch (e) { c.err(`gh: could not reach GitHub (${e.message})`); return 1; }
+  },
+  open(a, c) {
+    const u = LINKS[a[0]];
+    if (!u) { c.err('usage: open NAME\nnames: ' + Object.keys(LINKS).join(', ')); return 1; }
+    window.open(u, '_blank', 'noopener');
+    c.out(`opening ${u}\n`); return 0;
+  },
+  'xdg-open'(a, c) { return cmds.open(a, c); },
+  sudo(a, c) {
+    if (a[0] === 'rm') { c.err('sudo: nice try. this incident will be reported to nobody.'); return 1; }
+    c.err('kal1x is not in the sudoers file. This incident will be reported.'); return 1;
+  },
+  vim(a, c) { c.err("vim: not installed. You are safe. You can still leave."); return 127; },
+  vi(a, c) { return cmds.vim(a, c); },
+  nano(a, c) { c.err('nano: not installed. Use: echo "text" > file'); return 127; },
+  ping(a, c) { c.err('ping: browsers cannot send raw packets. Try: ip_checker ' + (a[0] || '8.8.8.8')); return 2; },
+  cowsay(a, c) {
+    const t = (a.join(' ') || c.stdin.trim() || 'moo').slice(0, 60);
+    c.out(` ${'_'.repeat(t.length + 2)}\n< ${t} >\n ${'-'.repeat(t.length + 2)}\n        \\   ^__^\n         \\  (oo)\\_______\n            (__)\\       )\\/\\\n                ||----w |\n                ||     ||\n`);
+    return 0;
+  },
+  reboot() { ended = true; setTimeout(() => boot(false), 0); return 0; },
+  exit() { ended = true; setTimeout(loggedOut, 0); return 0; },
+  logout() { return cmds.exit(); }
+};
+async function slice(a, c, which) {
+  let n = 10; const paths = [];
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] === '-n') n = parseInt(a[++i], 10);
+    else if (/^-\d+$/.test(a[i])) n = parseInt(a[i].slice(1), 10);
+    else paths.push(a[i]);
+  }
+  if (!Number.isFinite(n) || n < 0) { c.err(`${which}: invalid number of lines`); return 1; }
+  let t = c.stdin;
+  if (paths.length) {
+    const e = node(paths[0]);
+    if (!e || e.d) { c.err(`${which}: cannot open '${paths[0]}'`); return 1; }
+    try { t = await read(e); } catch (x) { c.err(`${which}: could not reach GitHub`); return 1; }
+  }
+  const L = t.split('\n'); if (L[L.length - 1] === '') L.pop();
+  const s = which === 'head' ? L.slice(0, n) : L.slice(Math.max(0, L.length - n));
+  c.out(s.length ? s.join('\n') + '\n' : ''); return 0;
+}
+async function move(a, c, op) {
+  const fl = a.filter((x) => x.startsWith('-')).join(''), p = a.filter((x) => !x.startsWith('-'));
+  if (p.length !== 2) { c.err(`${op}: need a source and a destination`); return 1; }
+  const src = node(p[0]);
+  if (!src) { c.err(`${op}: cannot stat '${p[0]}': No such file or directory`); return 1; }
+  if (src.d && op === 'cp' && !/[rR]/.test(fl)) { c.err(`cp: -r not specified; omitting directory '${p[0]}'`); return 1; }
+  const absSrc = abs(p[0]);
+  let dst = abs(p[1]); const de = node(dst);
+  if (de && de.d) dst = dst.replace(/\/$/, '') + '/' + absSrc.split('/').pop();
+  if (dst === absSrc) { c.err(`${op}: '${p[0]}' and '${p[1]}' are the same file`); return 1; }
+  if (dst.startsWith(absSrc + '/')) { c.err(`${op}: cannot put '${p[0]}' inside itself`); return 1; }
+  if (op === 'mv' && (absSrc === HOME || absSrc === '/home' || cwd === absSrc || cwd.startsWith(absSrc + '/'))) { c.err(`mv: cannot move '${p[0]}': you are using it`); return 1; }
+  const { dir, name } = parent(dst);
+  if (!dir || !dir.d) { c.err(`${op}: cannot create '${p[1]}': No such file or directory`); return 1; }
+  dir.d[name] = op === 'cp' ? JSON.parse(JSON.stringify(src)) : src;
+  if (op === 'mv') { const from = parent(absSrc); delete from.dir.d[from.name]; }
+  return 0;
+}
+
+/* ---------- parser ---------- */
+function lex(input) {
+  const toks = []; let cur = null, i = 0;
+  const add = (s) => { cur = cur || { v: '', g: false }; cur.v += s; };
+  const push = () => { if (cur) { toks.push({ w: cur.v, glob: cur.g }); cur = null; } };
+  const dollar = () => {
+    const m = /^\$(\?|\{\w+\}|\w+)/.exec(input.slice(i));
+    if (!m) return '$';
+    const k = m[1].replace(/[{}]/g, ''); i += m[0].length - 1;
+    return '\u0001' + k + '\u0002';
+  };
+  while (i < input.length) {
+    const ch = input[i];
+    if (ch === "'") {
+      const j = input.indexOf("'", i + 1);
+      if (j < 0) throw new Error('unexpected EOF while looking for matching `\'\'');
+      add(input.slice(i + 1, j)); i = j + 1;
+    } else if (ch === '"') {
+      add(''); i++;
+      for (;;) {
+        if (i >= input.length) throw new Error('unexpected EOF while looking for matching `"\'');
+        if (input[i] === '"') { i++; break; }
+        if (input[i] === '\\' && /["\\$]/.test(input[i + 1] || '')) { add(input[i + 1]); i += 2; continue; }
+        if (input[i] === '$') { add(dollar()); i++; continue; }
+        add(input[i++]);
+      }
+    } else if (ch === '\\' && i + 1 < input.length) { add(input[i + 1]); i += 2; }
+    else if (/\s/.test(ch)) { push(); i++; }
+    else if (ch === '#' && !cur) break;
+    else if (input.startsWith('&&', i) || input.startsWith('||', i) || input.startsWith('>>', i)) { push(); toks.push({ op: input.slice(i, i + 2) }); i += 2; }
+    else if (ch === '|' || ch === '>' || ch === ';') { push(); toks.push({ op: ch }); i++; }
+    else if (ch === '$') { add(dollar()); i++; }
+    else if (ch === '*' || ch === '?') { add(ch); cur.g = true; i++; }
+    else if (ch === '~' && !cur && (i + 1 === input.length || /[\/\s]/.test(input[i + 1]))) { add(HOME); i++; }
+    else { add(ch); i++; }
+  }
+  push();
+  return toks;
+}
+function glob(w) {
+  const slash = w.lastIndexOf('/');
+  const base = slash >= 0 ? w.slice(0, slash + 1) : '', pat = w.slice(slash + 1);
+  const dir = node(base || '.');
+  if (!dir || !dir.d) return [w];
+  const re = new RegExp('^' + pat.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*').replace(/\?/g, '.') + '$');
+  const m = Object.keys(dir.d).filter((k) => re.test(k) && (pat.startsWith('.') || !k.startsWith('.'))).sort().map((k) => base + k);
+  return m.length ? m : [w];
+}
+function parse(toks) {
+  const seq = []; let pipe = [], cmd = { argv: [], redir: null }, conn = ';';
+  const endCmd = () => {
+    if (!cmd.argv.length && !cmd.redir) throw new Error('syntax error near unexpected token');
+    pipe.push(cmd); cmd = { argv: [], redir: null };
+  };
+  const endPipe = (next) => { endCmd(); seq.push({ conn, pipe }); pipe = []; conn = next; };
+  for (let i = 0; i < toks.length; i++) {
+    const t = toks[i];
+    if (t.w !== undefined) { cmd.argv.push(t); continue; }
+    if (t.op === '|') endCmd();
+    else if (t.op === '>' || t.op === '>>') {
+      const nx = toks[++i];
+      if (!nx || nx.w === undefined) throw new Error('syntax error near unexpected token `newline\'');
+      cmd.redir = { path: nx.w, append: t.op === '>>' };
+    } else if (i === toks.length - 1 && t.op === ';') break;
+    else endPipe(t.op);
+  }
+  if (cmd.argv.length || cmd.redir || pipe.length) endPipe(';');
+  return seq;
+}
+function expand(w) {
+  const e = env();
+  return w.replace(/\u0001([^\u0002]*)\u0002/g, (m, k) => e[k] !== undefined ? e[k] : '');
+}
+async function execCmd(cmd, stdin, tty) {
+  const argv = cmd.argv.flatMap((t) => {
+    const v = expand(t.w);
+    if (v === '' && t.w.startsWith('\u0001')) return [];
+    return t.glob ? glob(v) : [v];
+  });
+  const [name, ...args] = argv;
+  if (cmd.redir) cmd = { ...cmd, redir: { ...cmd.redir, path: expand(cmd.redir.path) } };
+  let buf = '';
+  const flush = () => { if (tty && buf) { print(buf); buf = ''; } };
+  const c = {
+    stdin, tty: tty && !cmd.redir,
+    out(s) { buf += s; },
+    err(s) { flush(); print(s + '\n', 'err'); },
+    rich(el) { flush(); $out.append(el); toEnd(); }
+  };
+  let st;
+  if (name === undefined) st = 0;
+  else if (name.includes('/')) {
+    const n = node(name);
+    if (!n) { c.err(`bash: ${name}: No such file or directory`); st = 127; }
+    else if (n.d) { c.err(`bash: ${name}: Is a directory`); st = 126; }
+    else if (!n.x) { c.err(`bash: ${name}: Permission denied`); st = 126; }
+    else st = runIpChecker(args, c);
+  } else if (Object.prototype.hasOwnProperty.call(cmds, name)) st = await cmds[name](args, c);
+  else { c.err(`bash: ${name}: command not found`); st = 127; }
+  if (cmd.redir) {
+    const { dir, name: fn } = parent(cmd.redir.path), ex = node(cmd.redir.path);
+    if (!dir || !dir.d) { c.err(`bash: ${cmd.redir.path}: No such file or directory`); return { st: 1, buf: '' }; }
+    if (ex && ex.d) { c.err(`bash: ${cmd.redir.path}: Is a directory`); return { st: 1, buf: '' }; }
+    if (cmd.redir.append && ex && ex.f !== undefined) ex.f += buf; else dir.d[fn] = f(buf);
+    buf = '';
+  }
+  flush();
+  return { st, buf };
+}
+async function run(input) {
+  let seq;
+  try { seq = parse(lex(input)); }
+  catch (e) { print('bash: ' + e.message + '\n', 'err'); lastStatus = 2; return; }
+  for (const { conn, pipe } of seq) {
+    if ((conn === '&&' && lastStatus !== 0) || (conn === '||' && lastStatus === 0)) continue;
+    let stdin = '';
+    for (let i = 0; i < pipe.length; i++) {
+      const r = await execCmd(pipe[i], stdin, i === pipe.length - 1);
+      stdin = r.buf; lastStatus = r.st;
+    }
+  }
+}
+
+/* ---------- completion ---------- */
+function complete() {
+  const v = $in.value.slice(0, $in.selectionStart), after = $in.value.slice($in.selectionStart);
+  const m = /(^|[\s|;&>])([^\s|;&>]*)$/.exec(v);
+  const word = m ? m[2] : '', start = v.length - word.length;
+  const first = !v.slice(0, start).trim() || /[|;&]\s*$/.test(v.slice(0, start));
+  let cands = [];
+  const slash = word.lastIndexOf('/');
+  const base = slash >= 0 ? word.slice(0, slash + 1) : '', stem = word.slice(slash + 1);
+  if (first && slash < 0) cands = Object.keys(cmds).filter((k) => k.startsWith(stem)).map((k) => k + ' ');
+  if (!(first && slash < 0)) {
+    const dir = node(base || '.');
+    if (dir && dir.d) cands = Object.keys(dir.d).filter((k) => k.startsWith(stem) && (stem.startsWith('.') || !k.startsWith('.'))).sort().map((k) => base + k + (dir.d[k].d ? '/' : ' '));
+  }
+  if (!cands.length) return;
+  let pre = cands[0];
+  for (const x of cands) while (!x.startsWith(pre)) pre = pre.slice(0, -1);
+  if (cands.length === 1 || pre.length > word.length) {
+    $in.value = v.slice(0, start) + pre + after;
+    const pos = start + pre.length; $in.setSelectionRange(pos, pos);
+  } else {
+    echoCmd($in.value);
+    print(cands.map((x) => x.trim().split('/').filter(Boolean).pop() + (x.endsWith('/') ? '/' : '')).join('  ') + '\n');
+  }
+}
+
+/* ---------- boot and input ---------- */
+const BOOT = [
+'[    0.000000] Linux version 6.12.0-kal1x (kal1x@kalix) #1 SMP PREEMPT',
+'[    0.000000] Command line: BOOT_IMAGE=/vmlinuz root=/dev/cebu ro',
+'[    0.021337] smpboot: CPU0: one brain, multiple tabs open',
+'[    0.048120] uclm: BSIT module loaded',
+'[    0.127703] sharepoint: site collection mounted at /sites/work',
+'[    0.168991] powerplatform: registered apps, automate, bi',
+'[    0.251880] laravel: artisan ready',
+'[    0.298402] flutter: hot reload enabled',
+'[    0.417365] philip: loading flood and landslide models',
+'[    0.588431] hack4gov: security subsystem ready',
+'[    0.703250] aftereffects: render queue attached',
+'[  OK  ] Mounted /home/kal1x/projects.',
+'[  OK  ] Started Laravel Application Server.',
+'[  OK  ] Started Hackathon Sleep Deprivation Service.',
+'[  OK  ] Reached target Multi-User System.',
+''];
+let skip = false, bootId = 0, ended = false;
+const sleep = (ms) => skip ? Promise.resolve() : new Promise((r) => setTimeout(r, ms));
+function reset() {
+  fs = initialFS(); cwd = HOME; oldpwd = HOME; lastStatus = 0; hist = hist || []; histPos = hist.length;
+}
+function bootLine(s) {
+  const l = line();
+  if (s.startsWith('[  OK  ]')) l.append('[  ', span('g', 'OK'), '  ]' + s.slice(8));
+  else if (s.startsWith('[')) { const i = s.indexOf(']') + 1; l.append(span('dim', s.slice(0, i)), s.slice(i)); }
+  else l.append(s);
+  toEnd();
+}
+function ready() {
+  setPrompt(); $row.hidden = false; $in.value = ''; focusIn(); toEnd();
+}
+function focusIn() { $in.focus({ preventScroll: true }); }
+async function boot(instant) {
+  const id = ++bootId;
+  $row.hidden = true; $out.replaceChildren(); reset();
+  skip = !!instant;
+  for (const s of BOOT) { if (id !== bootId) return; bootLine(s); await sleep(s.includes('OK') ? 130 : 45); }
+  await sleep(250); if (id !== bootId) return;
+  const lg = line(); lg.append('kalix login: ');
+  for (const ch of 'kal1x') { lg.append(ch); await sleep(70); if (id !== bootId) return; }
+  print('Password:\n');
+  await sleep(300); if (id !== bootId) return;
+  $out.replaceChildren();
+  echoCmd('neofetch');
+  $out.append(neofetchEl());
+  print("You can type here. Try 'help', 'ls', 'man kal1x' or 'ip_checker 8.8.8.8'.\n", 'dim');
+  skip = true;
+  ready();
+}
+function loggedOut() {
+  $row.hidden = true; print('logout\nConnection to kalix closed. Press Enter to log back in.\n', 'dim');
+  const again = (e) => { if (e.key === 'Enter') { window.removeEventListener('keydown', again); setTimeout(() => boot(false), 0); } };
+  window.addEventListener('keydown', again);
+}
+$in.addEventListener('keydown', async (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    const v = $in.value; $in.value = '';
+    echoCmd(v);
+    if (v.trim()) {
+      if (hist[hist.length - 1] !== v) hist.push(v);
+      histPos = hist.length;
+      $row.hidden = true;
+      await run(v);
+      if (ended) ended = false; else { setPrompt(); $row.hidden = false; focusIn(); }
+    }
+    toEnd();
+  } else if (e.key === 'Tab') { e.preventDefault(); complete(); toEnd(); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); if (histPos > 0) { $in.value = hist[--histPos]; } }
+  else if (e.key === 'ArrowDown') { e.preventDefault(); if (histPos < hist.length - 1) $in.value = hist[++histPos]; else { histPos = hist.length; $in.value = ''; } }
+  else if (e.ctrlKey && e.key.toLowerCase() === 'c' && !String(getSelection())) { e.preventDefault(); echoCmd($in.value + '^C'); $in.value = ''; lastStatus = 130; toEnd(); }
+  else if (e.ctrlKey && e.key.toLowerCase() === 'l') { e.preventDefault(); $out.replaceChildren(); toEnd(); }
+});
+window.addEventListener('keydown', () => { if ($row.hidden) skip = true; else if (document.activeElement !== $in && !String(getSelection())) focusIn(); });
+document.addEventListener('click', (e) => {
+  if ($row.hidden) { skip = true; return; }
+  if (e.target.closest('a') || String(getSelection())) return;
+  focusIn();
+});
+boot(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+</script>
+</body>
+</html>

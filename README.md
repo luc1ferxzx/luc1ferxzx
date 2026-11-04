@@ -1,4 +1,6 @@
-<img src="assets/boot.svg" alt="kal1x boots, logs in and runs neofetch" width="100%" />
+<a href="https://luc1ferxzx.github.io/luc1ferxzx/"><img src="assets/boot.svg" alt="kal1x boots, logs in and runs neofetch. Click to open a terminal you can type in." width="100%" /></a>
+
+<p align="center"><a href="https://luc1ferxzx.github.io/luc1ferxzx/"><code>$ ssh kal1x@kalix  # click to log in and type</code></a></p>
 
 <pre>
 KAL1X(1)                     User Commands                      KAL1X(1)
@@ -55,7 +57,7 @@ KAL1X(1)                     User Commands                      KAL1X(1)
        None known. That is not the same as none.
 
 <b>SEE ALSO</b>
-       <a href="https://www.linkedin.com/in/kyle-peralta-415036324/">linkedin</a>(1)
+       <a href="https://luc1ferxzx.github.io/luc1ferxzx/">shell</a>(1), <a href="https://www.linkedin.com/in/kyle-peralta-415036324/">linkedin</a>(1)
 
 <b>NOTES</b>
        To live is to create. To create is reality.
